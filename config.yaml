@@ -1,0 +1,30 @@
+# video-log 场记系统配置
+# API key 建议用环境变量 DAILYLOG_API_KEY(与 daily-log 共用),优先级高于本文件
+api:
+  base_url: https://open.bigmodel.cn/api/paas/v4   # OpenAI 兼容端点,可换 DashScope 等
+  api_key: ""
+  vision_model: glm-4v-flash
+  text_model: glm-4-flash
+
+processing:
+  max_image_px: 1024        # 上传帧的最长边,控制视觉 token
+  jpeg_quality: 85
+  call_interval_sec: 0.3
+
+shots:
+  interval_sec: 30          # 固定切段间隔:粗看 60,细看 15
+  merge_hash_dist: 6        # 相邻段 dHash 距离小于该值则合并(静止段,0-64)
+  frame_max_px: 1024
+  transition_threshold: 0.3 # 场景检测阈值(0-1),越小越灵敏
+  snap_ratio: 0.35          # 切分边界向转场吸附的最大距离(占间隔比例)
+
+asr:
+  model: small              # base(快)/small(默认)/medium(更准更慢)
+  language: zh
+  device: auto
+  initial_prompt: "以下是普通话的句子。"
+  # 模型下载失败可设置环境变量 HF_ENDPOINT=https://hf-mirror.com
+
+paths:
+  data_dir: data
+  sheets_dir: sheets
